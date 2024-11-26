@@ -1,0 +1,53 @@
+@Clinica_TFI_HostAddress = http://localhost:5180
+
+###
+GET {{Clinica_TFI_HostAddress}}/api/Clinica/Pacientes
+Accept: application/json
+
+###
+GET {{Clinica_TFI_HostAddress}}/api/Clinica/Pacientes/42358796
+Accept: application/json
+
+###
+POST {{Clinica_TFI_HostAddress}}/api/Clinica/Pacientes/
+Accept: application/json
+Content-Type: application/json
+{
+  "dni": "44105560",
+  "cuil": "11444111660",
+  "fechaNacimiento": "2024-11-19",
+  "email": "rocio@gmail.com",
+  "telefono": "3814068088",
+  "nombre": "rocio",
+  "apellido": "palma",
+  "domicilio": "crisostomo alvarez 80."
+}
+###
+POST {{Clinica_TFI_HostAddress}}/api/Clinica/Pacientes/44105560/Diagnostico
+Accept: application/json
+Content-Type: application/json
+{
+  "descripcion": "Dengue"
+}
+
+###
+POST {{Clinica_TFI_HostAddress}}/api/Clinica/Medico/Register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nombre": "valeria",
+  "apellido": "palma",
+  "especialidad": "clinico",
+  "correo": "vale@gmail.com",
+  "clave": "1234"
+}
+
+###
+POST {{Clinica_TFI_HostAddress}}/api/Clinica/Medico/Login
+Accept: application/json
+Content-Type: application/json
+{
+  "correo": "vale@gmail.com",
+  "clave": "1234"
+}
