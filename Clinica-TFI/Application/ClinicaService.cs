@@ -53,5 +53,10 @@ namespace Clinica_TFI.Application
             _clinicaRepository.UpdatePaciente(paciente);
             return paciente;
         }
+
+        public Paciente AddRecetaDigital(string dniPaciente, string diagnostico, string )
+        {
+
+        }
     }
 }
