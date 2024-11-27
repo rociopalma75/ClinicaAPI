@@ -53,9 +53,15 @@
             if (diagnosticoEncontrado == null) throw new ArgumentException($"El diagnóstico {diagnostico} no se encuentra");
 
             diagnosticoEncontrado.AddRecetaDigital(idEvolucion,  medicamentos,observacionesMedicas);
-
         }
 
+        public void AddPedidoLaboratorio(string diagnostico, int idEvolucion, Medico medico, string pedidoRequest)
+        {
+            Diagnostico? diagnosticoEncontrado = GetDiagnostico(diagnostico);
 
+            if (diagnosticoEncontrado == null) throw new ArgumentException($"El diagnóstico {diagnostico} no se encuentra");
+
+            diagnosticoEncontrado.AddPedidoLaboratorio(idEvolucion, medico, pedidoRequest);
+        }
     }
 }

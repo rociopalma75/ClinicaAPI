@@ -5,4 +5,9 @@
         public string Observaciones { get; set; }
         public string Medicamentos { get; set; }
     }
+
+    public record PedidoLaboratorioRequestDTO
+    {
+        public string Descripcion { get; set; }
+    }
 }

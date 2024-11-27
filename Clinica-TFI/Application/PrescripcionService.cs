@@ -8,13 +8,13 @@ using static System.Net.WebRequestMethods;
 
 namespace Clinica_TFI.Application
 {
-    public class RecetaService
+    public class PrescripcionService
     {
         private readonly IClinicaRepository _clinicalRepository;
         private readonly ExternalAPIService _externalAPIService;
         private readonly IMapper _mapper;
 
-        public RecetaService(IClinicaRepository clinicalRepository, ExternalAPIService externalAPIService, IMapper mapper)
+        public PrescripcionService(IClinicaRepository clinicalRepository, ExternalAPIService externalAPIService, IMapper mapper)
         {
             _clinicalRepository = clinicalRepository;
             _externalAPIService = externalAPIService;
@@ -53,6 +53,16 @@ namespace Clinica_TFI.Application
             return resultsMedicamentos;
         }
 
+        public Paciente AddPedidoLaboratorio(string dniPaciente, string diagnostico, int idEvolucion, Medico medico, PedidoLaboratorioRequestDTO pedidoRequest)
+        {
+            Paciente? paciente = _clinicalRepository.GetPacienteByDni(dniPaciente) ?? throw new Exception($"El paciente con DNI {dniPaciente} no se encuentra");
+
+            //Para registrar pedido tiene que tener obra social?
+            paciente.AddPedidoLaboratorio(diagnostico, idEvolucion, medico, pedidoRequest.Descripcion);
+
+            _clinicalRepository.UpdatePaciente(paciente);
+            return paciente;
+        }
 
 
 

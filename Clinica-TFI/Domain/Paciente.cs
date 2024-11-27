@@ -23,6 +23,7 @@
             Nombre = nombre;
             Apellido = apellido;
             Domicilio = domicilio;
+            ObraSocial = "SANCOR";
             HistoriaClinica = new HistoriaClinica();
         }
 
@@ -54,6 +55,10 @@
             this.HistoriaClinica.AddRecetaDigital(diagnostico, idEvolucion, medicamentos, observacionesMedicas);
         }
 
+        public void AddPedidoLaboratorio(string diagnostico, int idEvolucion, Medico medico, string pedidoRequest)
+        {
+            this.HistoriaClinica.AddPedidoLaboratorio(diagnostico, idEvolucion, medico, pedidoRequest);
+        }
 
     }
 }

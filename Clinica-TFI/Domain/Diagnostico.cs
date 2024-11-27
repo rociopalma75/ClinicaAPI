@@ -51,9 +51,16 @@
         {
             Evolucion? evolucionEncontrada = GetEvolucionById(idEvolucion) ?? throw new Exception($"No se encuentra la evolucion con ID {idEvolucion}");
 
-            if (evolucionEncontrada.ExitsRecetaDigital()) throw new Exception($"La evolución con ID {idEvolucion} ya tiene una receta digital registrada");
+            if (evolucionEncontrada.ExistsRecetaDigital()) throw new Exception($"La evolución con ID {idEvolucion} ya tiene una receta digital registrada");
 
             evolucionEncontrada.AddRecetaDigital(medicamentos, observacionesMedicas);
+        }
+
+        public void AddPedidoLaboratorio(int idEvolucion, Medico medico, string pedidoRequest)
+        {
+            Evolucion? evolucionEncontrada = GetEvolucionById(idEvolucion) ?? throw new Exception($"No se encuentra la evolucion con ID {idEvolucion}");
+
+            evolucionEncontrada.AddPedidoLaboratorio(medico, pedidoRequest);
         }
     }
 }

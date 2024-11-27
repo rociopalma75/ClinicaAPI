@@ -29,7 +29,7 @@ namespace Clinica_TFI
             builder.Services.AddScoped<ClinicaService>();
             builder.Services.AddScoped<UsuarioService>();
             builder.Services.AddScoped<ExternalAPIService>();
-            builder.Services.AddScoped<RecetaService>();
+            builder.Services.AddScoped<PrescripcionService>();
 
             builder.Services.AddAutoMapper(typeof(Program));
 
