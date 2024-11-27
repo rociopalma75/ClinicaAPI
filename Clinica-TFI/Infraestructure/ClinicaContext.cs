@@ -1,4 +1,4 @@
-﻿using Clinica_TFI.Models;
+﻿using Clinica_TFI.Domain;
 
 namespace Clinica_TFI.Infraestructure
 {
@@ -6,6 +6,7 @@ namespace Clinica_TFI.Infraestructure
     {
         public List<Paciente> Pacientes { get; set; }
         public List<Medico> Medicos { get; set; }
+        public List<CatalogoPlantillas> CatalogoPlantillas {  get; set; }
         public ClinicaContext()
         {
             Pacientes = new List<Paciente>
@@ -18,6 +19,14 @@ namespace Clinica_TFI.Infraestructure
             };
 
             Medicos = new List<Medico>();
+            List<string> campos = new List<string>
+            {
+                "Altura",
+                "Peso",
+                "Presion Arterial"
+            };
+
+            CatalogoPlantillas = new List<CatalogoPlantillas>() { new CatalogoPlantillas(1,campos)} ;
         }
 
     }

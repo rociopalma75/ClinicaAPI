@@ -1,4 +1,4 @@
-﻿namespace Clinica_TFI.Models
+﻿namespace Clinica_TFI.Domain
 {
     public class Diagnostico
     {
@@ -13,9 +13,14 @@
             Evoluciones = new List<Evolucion>();
         }
 
+        public int GenerarIdEvolucion() => this.Evoluciones.Count + 1;
+        public Evolucion? GetEvolucionById(int id) => this.Evoluciones.Where(e => e.Id == id).FirstOrDefault(); 
+
+
         public void AddEvolucion(Medico medico, string informe)
         {
-            Evolucion evolucion = new Evolucion(informe, medico);
+            int idEvolucion = GenerarIdEvolucion();
+            Evolucion evolucion = new Evolucion(idEvolucion, informe, medico);
             this.Evoluciones.Add(evolucion);
         }
 
@@ -29,5 +34,26 @@
             return this.Descripcion == nombreDiagnostico;
         }
 
+        public void AddEvolucionPlantilla(Medico medico, CatalogoPlantillas plantilla, dynamic request)
+        {
+            //Verificar las propiedades del request
+            bool existsProperties = plantilla.VerificarPropiedades(request);
+
+            if (!existsProperties) throw new ArgumentException("Error de formato de plantilla");
+
+            int idEvolucion = GenerarIdEvolucion();
+
+            Evolucion evolucion = new Evolucion(idEvolucion, request, medico);
+            this.Evoluciones.Add(evolucion);
+        }
+
+        public void AddRecetaDigital(int idEvolucion, List<Medicamento> medicamentos, string observacionesMedicas)
+        {
+            Evolucion? evolucionEncontrada = GetEvolucionById(idEvolucion) ?? throw new Exception($"No se encuentra la evolucion con ID {idEvolucion}");
+
+            if (evolucionEncontrada.ExitsRecetaDigital()) throw new Exception($"La evolución con ID {idEvolucion} ya tiene una receta digital registrada");
+
+            evolucionEncontrada.AddRecetaDigital(medicamentos, observacionesMedicas);
+        }
     }
 }

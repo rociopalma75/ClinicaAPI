@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Clinica_TFI.Application.DTO;
 using Clinica_TFI.Domain.Contracts;
-using Clinica_TFI.Models;
+using Clinica_TFI.Domain;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -25,7 +25,7 @@ namespace Clinica_TFI.Application
         public MedicoResponseDTO RegisterMedico(MedicoRequestDTO medicoRequest)
         {
             //Validar si ya existe el medico
-            Medico medicoInserted = new Medico(medicoRequest.Nombre, medicoRequest.Apellido, medicoRequest.Especialidad, medicoRequest.Correo, medicoRequest.Clave);
+            Medico medicoInserted = new Medico(medicoRequest.Nombre, medicoRequest.Apellido, medicoRequest.MatriculaMedica, medicoRequest.Especialidad, medicoRequest.Correo, medicoRequest.Clave);
             _clinicaRepository.RegisterMedico(medicoInserted);
             MedicoResponseDTO medicoResponse = _mapper.Map<MedicoResponseDTO>(medicoInserted);
             return medicoResponse;

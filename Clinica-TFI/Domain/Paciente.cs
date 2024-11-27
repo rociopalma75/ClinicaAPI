@@ -1,4 +1,4 @@
-﻿namespace Clinica_TFI.Models
+﻿namespace Clinica_TFI.Domain
 {
     public class Paciente
     {
@@ -10,6 +10,7 @@
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string Domicilio { get; set; }
+        public string? ObraSocial {  get; set; }
         public HistoriaClinica HistoriaClinica { get; set; }
 
         public Paciente(string dni, string cuil, DateOnly fechaNacimiento, string email, string telefono, string nombre, string apellido, string domicilio)
@@ -40,5 +41,19 @@
 
         public void AddEvolucion(string diagnostico, Medico medico, string informe) => this.HistoriaClinica.AddEvolucion(diagnostico, medico, informe);
         public void AddDiagnostico(string nombreDiagnostico) => this.HistoriaClinica.AddDiagnostico(nombreDiagnostico);
+
+        public void AddEvolucionPlantilla(string diagnostico, Medico medico, CatalogoPlantillas plantilla,dynamic request)
+        {
+            this.HistoriaClinica.AddEvolucionPlantilla(diagnostico, medico,plantilla,request);  
+        }
+
+        public bool TieneObraSocial() => !string.IsNullOrEmpty(this.ObraSocial);
+
+        public void AddRecetaDigital(string diagnostico, int idEvolucion, List<Medicamento> medicamentos, string observacionesMedicas) 
+        {
+            this.HistoriaClinica.AddRecetaDigital(diagnostico, idEvolucion, medicamentos, observacionesMedicas);
+        }
+
+
     }
 }

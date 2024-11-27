@@ -1,5 +1,5 @@
 ﻿using Clinica_TFI.Domain.Contracts;
-using Clinica_TFI.Models;
+using Clinica_TFI.Domain;
 
 namespace Clinica_TFI.Infraestructure
 {
@@ -18,8 +18,9 @@ namespace Clinica_TFI.Infraestructure
 
         public List<Medico> GetMedicos() => _contextoClinica.Medicos;
         public Paciente? GetPacienteByDni(string dniPaciente) => _contextoClinica.Pacientes.Where(p => p.Dni.Equals(dniPaciente)).FirstOrDefault();
+        public CatalogoPlantillas? GetCatalogoPlantillaById(int id) => _contextoClinica.CatalogoPlantillas.Where(c => c.Id == id).FirstOrDefault();
         public List<Paciente> GetPacientes() => _contextoClinica.Pacientes;
-
+        public List<CatalogoPlantillas> GetCatalogoPlantillas() => _contextoClinica.CatalogoPlantillas;
         public void CreatePaciente(Paciente paciente)
         {
             _contextoClinica.Pacientes.Add(paciente);

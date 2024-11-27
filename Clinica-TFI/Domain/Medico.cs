@@ -1,14 +1,17 @@
-﻿namespace Clinica_TFI.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Clinica_TFI.Domain
 {
     public class Medico
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
-        public string MatriculaMedica { get; set; } 
-        public string Especialidad { get; set; }
-        public string Correo {  get; set; }
-        public string ClaveHash { get; set; }
+        public string Nombre { get; set; } = null!;
+        public string Apellido { get; set; } = null!;
+        public string MatriculaMedica { get; set; } = null!;
+        public string Especialidad { get; set; } = null!;
+        public string Correo { get; set; } = null!;
+        [JsonIgnore]
+        public string ClaveHash { get; set; } = null!;
 
         public Medico()
         {

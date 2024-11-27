@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Clinica_TFI.Application.DTO;
-using Clinica_TFI.Models;
+using Clinica_TFI.Domain;
 
 namespace Clinica_TFI.Application
 {

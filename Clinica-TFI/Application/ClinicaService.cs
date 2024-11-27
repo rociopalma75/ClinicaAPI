@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Clinica_TFI.Application.DTO;
+using Clinica_TFI.Domain;
 using Clinica_TFI.Domain.Contracts;
-using Clinica_TFI.Models;
 
 namespace Clinica_TFI.Application
 {
@@ -18,7 +18,7 @@ namespace Clinica_TFI.Application
 
         public List<Paciente> GetPacientes() => _clinicaRepository.GetPacientes();
         public Paciente? GetPacienteByDni(string dniPaciente) => _clinicaRepository.GetPacienteByDni(dniPaciente);
-
+        public List<CatalogoPlantillas> GetCatalogoPlantillas() => _clinicaRepository.GetCatalogoPlantillas();
 
         public Paciente CreatePaciente(PacienteRequestDTO pacienteRequestDTO)
         {
@@ -30,7 +30,7 @@ namespace Clinica_TFI.Application
             _clinicaRepository.CreatePaciente(pacienteCreado);
             return pacienteCreado;
         }
-        public Paciente AddEvolucion(string dniPaciente, string diagnostico, Medico medico, EvolucionRequestDTO evolRequest)
+        public Paciente AddEvolucionTextoLibre(string dniPaciente, string diagnostico, Medico medico, EvolucionRequestDTO evolRequest)
         {
             Paciente? paciente = _clinicaRepository.GetPacienteByDni(dniPaciente) ?? throw new ArgumentException($"El paciente con DNI {dniPaciente} no se encuentra");
 
@@ -54,9 +54,15 @@ namespace Clinica_TFI.Application
             return paciente;
         }
 
-        public Paciente AddRecetaDigital(string dniPaciente, string diagnostico, string )
+        public Paciente AddEvolucionPlantilla(string dniPaciente, string diagnostico, Medico medico, int idPlantilla, dynamic request)
         {
+            Paciente? paciente = _clinicaRepository.GetPacienteByDni(dniPaciente) ?? throw new ArgumentException($"El paciente con DNI {dniPaciente} no se encuentra");
 
+            CatalogoPlantillas? catalogoPlantilla = _clinicaRepository.GetCatalogoPlantillaById(idPlantilla) ?? throw new ArgumentException($"La plantilla con ID {idPlantilla} no se encuentra registrada");
+
+            paciente.AddEvolucionPlantilla(diagnostico, medico, catalogoPlantilla, request);
+            _clinicaRepository.UpdatePaciente(paciente);
+            return paciente;
         }
     }
 }

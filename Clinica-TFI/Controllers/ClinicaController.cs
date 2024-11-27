@@ -1,6 +1,6 @@
 ﻿using Clinica_TFI.Application;
 using Clinica_TFI.Application.DTO;
-using Clinica_TFI.Models;
+using Clinica_TFI.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +23,7 @@ namespace Clinica_TFI.Controllers
         [HttpGet("Pacientes")]
         public async Task<ActionResult<List<Paciente>>> GetPacientes()
         {
-            List<Paciente?> pacientes = _clinicaService.GetPacientes();
+            List<Paciente> pacientes = _clinicaService.GetPacientes();
             return Ok(pacientes);
         }
 
@@ -60,17 +60,11 @@ namespace Clinica_TFI.Controllers
 
             try
             {
-                Paciente paciente = _clinicaService.AddEvolucion(dniPaciente, diagnostico, medico, evolRequest);
+                Paciente paciente = _clinicaService.AddEvolucionTextoLibre(dniPaciente, diagnostico, medico, evolRequest);
                 return Ok(paciente);
             }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.ToString());
-            } 
+            catch (ArgumentException ex) { return BadRequest(ex.Message); }
+            catch (Exception ex){ return BadRequest(ex.ToString()); }              
         }
 
         [HttpPost("Pacientes/{dniPaciente}/Diagnosticos")]
@@ -90,6 +84,38 @@ namespace Clinica_TFI.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.ToString());
+            }
+        }
+
+        [HttpGet("CatalogoPlantillas")]
+        public async Task<ActionResult<List<CatalogoPlantillas>>> GetPlantillas()
+        {
+            List<CatalogoPlantillas> catalogoPlantillas = _clinicaService.GetCatalogoPlantillas();
+            return Ok(catalogoPlantillas);
+        }
+
+        [HttpPost("Pacientes/{dniPaciente}/Diagnosticos/{diagnostico}/Plantilla/{idPlantilla}")]
+        public async Task<ActionResult<Paciente>> AddEvolucionPlantilla(string dniPaciente, string diagnostico, int idPlantilla, [FromBody] dynamic request)
+        {
+            if (!dniPaciente.All(c => char.IsDigit(c))) throw new ArgumentException("Ingreso un DNI con formato invalido");
+
+            var medicoJson = User.FindFirst("Sesion").Value;
+            if (string.IsNullOrEmpty(medicoJson)) return Unauthorized("No se pudo identificar el medico");
+            Medico medico = JsonSerializer.Deserialize<Medico>(medicoJson);
+
+            try
+            {
+                Paciente paciente = _clinicaService.AddEvolucionPlantilla(dniPaciente, diagnostico, medico, idPlantilla, request);
+
+                return Ok(paciente);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

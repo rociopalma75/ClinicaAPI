@@ -2,7 +2,7 @@ using AutoMapper;
 using Clinica_TFI.Application;
 using Clinica_TFI.Application.DTO;
 using Clinica_TFI.Domain.Contracts;
-using Clinica_TFI.Models;
+using Clinica_TFI.Domain;
 using NSubstitute;
 using System;
 using TechTalk.SpecFlow;
@@ -58,7 +58,7 @@ namespace Test.StepDefinitions
         [When("el medico guarda la evolucion")]
         public void WhenElMedicoGuardaLaEvolucion()
         {
-            this._pacienteResultado = _clinicaService.AddEvolucion(_dniPaciente, _diagnosticoElegido, _medico, _evolucionIngresada);
+            this._pacienteResultado = _clinicaService.AddEvolucionTextoLibre(_dniPaciente, _diagnosticoElegido, _medico, _evolucionIngresada);
         }
 
         [Then("se registra la evolucion en la historia clinica del paciente con el diagnostico, la descripcion y el medico.")]

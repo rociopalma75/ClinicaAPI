@@ -1,5 +1,6 @@
 
 using Clinica_TFI.Application;
+using Clinica_TFI.Application.Connected_Services;
 using Clinica_TFI.Domain.Contracts;
 using Clinica_TFI.Infraestructure;
 using FluentValidation;
@@ -27,6 +28,8 @@ namespace Clinica_TFI
             builder.Services.AddScoped<IClinicaRepository, ClinicaRepository>();
             builder.Services.AddScoped<ClinicaService>();
             builder.Services.AddScoped<UsuarioService>();
+            builder.Services.AddScoped<ExternalAPIService>();
+            builder.Services.AddScoped<RecetaService>();
 
             builder.Services.AddAutoMapper(typeof(Program));
 
