@@ -36,7 +36,7 @@ namespace Test.StepDefinitions
         [Given("el medico {string} ha iniciado sesion.")]
         public void GivenElMedicoHaIniciadoSesion_(string nombreMedico)
         {
-            _medico = new Medico(nombreMedico, "Torres", "Clinico", "rocio@gmail.com", "1234");
+            _medico = new Medico(nombreMedico, "Torres","12345/cl", "clinico" , "rocio@gmail.com", "1234");
         }
 
         [Given("ha buscado la historia clinica del paciente {string} que posee los siguientes diagnosticos")]
