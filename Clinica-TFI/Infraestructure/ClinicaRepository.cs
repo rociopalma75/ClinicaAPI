@@ -17,15 +17,12 @@ namespace Clinica_TFI.Infraestructure
         public bool ExistsPaciente(string dni) => _contextoClinica.Pacientes.Exists(p => p.Dni == dni);
 
         public List<Medico> GetMedicos() => _contextoClinica.Medicos;
+        public Medico? GetMedicoByCorreo(string correo) => _contextoClinica.Medicos.Where(m => m.Correo == correo).FirstOrDefault();
         public Paciente? GetPacienteByDni(string dniPaciente) => _contextoClinica.Pacientes.Where(p => p.Dni.Equals(dniPaciente)).FirstOrDefault();
         public CatalogoPlantillas? GetCatalogoPlantillaById(int id) => _contextoClinica.CatalogoPlantillas.Where(c => c.Id == id).FirstOrDefault();
         public List<Paciente> GetPacientes() => _contextoClinica.Pacientes;
         public List<CatalogoPlantillas> GetCatalogoPlantillas() => _contextoClinica.CatalogoPlantillas;
-        public void CreatePaciente(Paciente paciente)
-        {
-            _contextoClinica.Pacientes.Add(paciente);
-        }
-
+        public void CreatePaciente(Paciente paciente) => _contextoClinica.Pacientes.Add(paciente);
         public void UpdatePaciente(Paciente paciente)
         {
             //"Se actualiza en db"
@@ -37,9 +34,6 @@ namespace Clinica_TFI.Infraestructure
             medico.Id = idMedico;
             _contextoClinica.Medicos.Add(medico);
         }
-
-        public Medico? GetMedicoByCorreo(string correo) => _contextoClinica.Medicos.Where(m => m.Correo == correo).FirstOrDefault();
-
 
     }
 }

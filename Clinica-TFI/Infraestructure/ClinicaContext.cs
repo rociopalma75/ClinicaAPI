@@ -26,7 +26,17 @@ namespace Clinica_TFI.Infraestructure
                 "Presion Arterial"
             };
 
-            CatalogoPlantillas = new List<CatalogoPlantillas>() { new CatalogoPlantillas(1,campos)} ;
+            List<string> camposPlantilla2 = new List<string>
+            {
+                "Temperatura",
+                "Pulso"
+            };
+
+            CatalogoPlantillas = new List<CatalogoPlantillas>() 
+            { 
+                new CatalogoPlantillas(1,campos),
+                new CatalogoPlantillas(2, campos)
+            } ;
         }
 
     }

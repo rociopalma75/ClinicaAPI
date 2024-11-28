@@ -46,13 +46,13 @@
             diagnosticoEncontrado.AddEvolucionPlantilla(medico, plantilla, request);
         }
 
-        public void AddRecetaDigital(string diagnostico, int idEvolucion, List<Medicamento> medicamentos, string observacionesMedicas)
+        public void AddRecetaDigital(string diagnostico, int idEvolucion, Medico medico, List<Medicamento> medicamentos, string observacionesMedicas)
         {
             Diagnostico? diagnosticoEncontrado = GetDiagnostico(diagnostico);
 
             if (diagnosticoEncontrado == null) throw new ArgumentException($"El diagnóstico {diagnostico} no se encuentra");
 
-            diagnosticoEncontrado.AddRecetaDigital(idEvolucion,  medicamentos,observacionesMedicas);
+            diagnosticoEncontrado.AddRecetaDigital(idEvolucion, medico, medicamentos,observacionesMedicas);
         }
 
         public void AddPedidoLaboratorio(string diagnostico, int idEvolucion, Medico medico, string pedidoRequest)

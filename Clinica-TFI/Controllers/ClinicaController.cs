@@ -4,6 +4,7 @@ using Clinica_TFI.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Data.Common;
 using System.Text.Json;
 
@@ -19,7 +20,7 @@ namespace Clinica_TFI.Controllers
         {
             _clinicaService = clinicaService;
         }
-
+        [SwaggerOperation(Summary = "Listar las historias clínicas de todos los pacientes")]
         [HttpGet("Pacientes")]
         public async Task<ActionResult<List<Paciente>>> GetPacientes()
         {
@@ -27,6 +28,7 @@ namespace Clinica_TFI.Controllers
             return Ok(pacientes);
         }
 
+        [SwaggerOperation(Summary = "Listar la historia clínica de un paciente")]
         [HttpGet("Pacientes/{dniPaciente}")] 
         public async Task<ActionResult<Paciente?>> GetPacienteByDni(string dniPaciente)
         {
@@ -39,6 +41,7 @@ namespace Clinica_TFI.Controllers
             return Ok(paciente);
         }
 
+        [SwaggerOperation(Summary = "Registrar paciente")]
         [HttpPost("Pacientes")]
         public async Task<ActionResult<Paciente?>> PostPaciente(PacienteRequestDTO pacienteRequest)
         {
@@ -47,6 +50,7 @@ namespace Clinica_TFI.Controllers
             return Ok(pacienteCreado);
         }
 
+        [SwaggerOperation(Summary = "Agregar una evolución de texto libre a un paciente")]
         [HttpPost("Pacientes/{dniPaciente}/Diagnosticos/{diagnostico}")]
         public async Task<ActionResult<Paciente?>> AddEvolucion(string dniPaciente, string diagnostico, [FromBody] EvolucionRequestDTO evolRequest)
         {
@@ -67,6 +71,7 @@ namespace Clinica_TFI.Controllers
             catch (Exception ex){ return BadRequest(ex.ToString()); }              
         }
 
+        [SwaggerOperation(Summary = "Agregar un nuevo diagnóstico a un paciente")]
         [HttpPost("Pacientes/{dniPaciente}/Diagnosticos")]
         public async Task<ActionResult<Paciente>> AddDiagnostico(string dniPaciente, [FromBody] DiagnosticoRequestDTO diagnosticoRequest)
         {
@@ -87,6 +92,7 @@ namespace Clinica_TFI.Controllers
             }
         }
 
+        [SwaggerOperation(Summary = "Listar las plantillas de evolución")]
         [HttpGet("CatalogoPlantillas")]
         public async Task<ActionResult<List<CatalogoPlantillas>>> GetPlantillas()
         {
@@ -94,6 +100,8 @@ namespace Clinica_TFI.Controllers
             return Ok(catalogoPlantillas);
         }
 
+
+        [SwaggerOperation(Summary = "Agregar una evolución con una plantilla en lugar de texto libre")]
         [HttpPost("Pacientes/{dniPaciente}/Diagnosticos/{diagnostico}/Plantilla/{idPlantilla}")]
         public async Task<ActionResult<Paciente>> AddEvolucionPlantilla(string dniPaciente, string diagnostico, int idPlantilla, [FromBody] dynamic request)
         {

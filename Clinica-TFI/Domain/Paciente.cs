@@ -48,11 +48,9 @@
             this.HistoriaClinica.AddEvolucionPlantilla(diagnostico, medico,plantilla,request);  
         }
 
-        public bool TieneObraSocial() => !string.IsNullOrEmpty(this.ObraSocial);
-
-        public void AddRecetaDigital(string diagnostico, int idEvolucion, List<Medicamento> medicamentos, string observacionesMedicas) 
+        public void AddRecetaDigital(string diagnostico, int idEvolucion, Medico medico, List<Medicamento> medicamentos, string observacionesMedicas) 
         {
-            this.HistoriaClinica.AddRecetaDigital(diagnostico, idEvolucion, medicamentos, observacionesMedicas);
+            this.HistoriaClinica.AddRecetaDigital(diagnostico, idEvolucion, medico, medicamentos, observacionesMedicas);
         }
 
         public void AddPedidoLaboratorio(string diagnostico, int idEvolucion, Medico medico, string pedidoRequest)

@@ -6,7 +6,9 @@ using Clinica_TFI.Infraestructure;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
+using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 namespace Clinica_TFI
@@ -23,7 +25,30 @@ namespace Clinica_TFI
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "API de Historia Clínica",
+                    Version = "v1",
+                    Description = "Esta API permite gestionar la historia clínica de pacientes, proporcionando funcionalidades para registrar y listar evoluciones médicas. Cada evolución puede incluir datos estructurados mediante plantillas predefinidas, así como texto libre para observaciones adicionales. Además, es posible asociar recetas digitales y solicitudes de laboratorio a las evoluciones."
+                });
+
+                // Añadir información de seguridad para JWT
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Nota: Esta API requiere autenticación mediante un token JWT (JSON Web Token). El token debe enviarse en el encabezado 'Authorization' con el formato: 'Bearer {token}'."
+                });
+
+
+                c.EnableAnnotations();
+                c.ExampleFilters();
+            });
 
             builder.Services.AddScoped<IClinicaRepository, ClinicaRepository>();
             builder.Services.AddScoped<ClinicaService>();
@@ -36,6 +61,8 @@ namespace Clinica_TFI
             //Dependecy Injection - Fluent Validation
             builder.Services.AddValidatorsFromAssemblyContaining<Program>();
             builder.Services.AddFluentValidationAutoValidation();
+
+            builder.Services.AddSwaggerExamplesFromAssemblyOf<Program>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

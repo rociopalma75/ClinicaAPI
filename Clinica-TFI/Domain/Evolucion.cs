@@ -10,7 +10,7 @@ namespace Clinica_TFI.Domain
         public string? Informe { get; set; }
         public dynamic? Plantilla { get; set; }
         public RecetaDigital? RecetaDigital { get; set; } = null;
-        public List<PedidoLaboratorio>? PedidoLaboratorio { get; set; } = null;
+        public PedidoLaboratorio? PedidoLaboratorio { get; set; } = null;
 
         public Evolucion(int id, string informe, Medico medico)
         {
@@ -27,7 +27,6 @@ namespace Clinica_TFI.Domain
             Medico = medico;
             FechaHora = DateTime.Now;
         }
-        public int GenerarIdPedidoLaboratorio() => this.PedidoLaboratorio.Count + 1;
         public bool ExistEvolucion(Medico medico, string informe)
         {
             return this.Medico.Equals(medico) && this.Informe.Equals(informe);
@@ -36,21 +35,27 @@ namespace Clinica_TFI.Domain
         public bool ExistsRecetaDigital() => this.RecetaDigital != null;
         public bool ExistsPedidoLaboratorio() => this.PedidoLaboratorio != null;
 
-        public void AddRecetaDigital(List<Medicamento> medicamentos, string observacionesMedicas)
+        public bool MayorA48Horas()
         {
-            //Validar lo de las 48hs 
-            this.RecetaDigital = new RecetaDigital(medicamentos, observacionesMedicas, this.Medico);
+            TimeSpan difference = DateTime.Now.Subtract(this.FechaHora);
+
+            if(difference.TotalHours > 48) return true;
+            return false;
+        }
+
+        public void AddRecetaDigital(Medico medico, List<Medicamento> medicamentos, string observacionesMedicas)
+        {
+            if (MayorA48Horas()) throw new Exception("Transcurrieron más de 48 hs, no se puede editar la evolución");
+           
+            this.RecetaDigital = new RecetaDigital(medicamentos, observacionesMedicas, medico);
         }
 
         public void AddPedidoLaboratorio(Medico medico, string pedidoRequest)
         {
             //Validar lo de las 48hs
-            if (!ExistsPedidoLaboratorio()) this.PedidoLaboratorio = new List<PedidoLaboratorio>();
+            if (MayorA48Horas()) throw new Exception("Transcurrieron más de 48 hs, no se puede editar la evolución");
 
-            int idPedido = GenerarIdPedidoLaboratorio();
-
-            PedidoLaboratorio pedidoNuevo = new PedidoLaboratorio(idPedido, medico, pedidoRequest);
-            this.PedidoLaboratorio?.Add(pedidoNuevo);
+            this.PedidoLaboratorio = new PedidoLaboratorio(medico, pedidoRequest);
         }
 
     }

@@ -21,11 +21,9 @@ namespace Clinica_TFI.Application
             _mapper = mapper;
         }
 
-        public async Task<Paciente> AddRecetaDigital(string dniPaciente, string diagnostico, int idEvolucion, RecetaDigitalRequestDTO recetaRequest)
+        public async Task<Paciente> AddRecetaDigital(string dniPaciente, string diagnostico, int idEvolucion,Medico medico, RecetaDigitalRequestDTO recetaRequest)
         {
             Paciente? paciente = _clinicalRepository.GetPacienteByDni(dniPaciente) ?? throw new Exception($"El paciente con DNI {dniPaciente} no se encuentra");
-
-            if (!paciente.TieneObraSocial()) throw new Exception($"El paciente con DNI {dniPaciente} no tiene obra social");
 
             List<string> medicamentos = recetaRequest.Medicamentos.Split(',').ToList();
 
@@ -33,7 +31,7 @@ namespace Clinica_TFI.Application
 
             List<Medicamento> listaMedicamentos = await ObtenerMedicamentos(medicamentos);
 
-            paciente.AddRecetaDigital(diagnostico, idEvolucion, listaMedicamentos, recetaRequest.Observaciones);
+            paciente.AddRecetaDigital(diagnostico, idEvolucion,medico, listaMedicamentos, recetaRequest.Observaciones);
 
             _clinicalRepository.UpdatePaciente(paciente);
             return paciente;

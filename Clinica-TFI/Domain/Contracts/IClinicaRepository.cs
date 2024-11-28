@@ -9,10 +9,10 @@ namespace Clinica_TFI.Domain.Contracts
         List<CatalogoPlantillas> GetCatalogoPlantillas();
         bool ExistsMedico(string correo);
         bool ExistsPaciente(string dni);
-        void CreatePaciente(Paciente paciente);
         Paciente? GetPacienteByDni(string dniPaciente);
         Medico? GetMedicoByCorreo(string correo);
         CatalogoPlantillas? GetCatalogoPlantillaById(int id);
+        void CreatePaciente(Paciente paciente);
         void UpdatePaciente(Paciente paciente);
         void RegisterMedico(Medico medico);
     }
