@@ -15,6 +15,10 @@ namespace Clinica_TFI.Application.Validation
             RuleFor(m => m.MatriculaMedica)
                 .NotEmpty()
                 .MinimumLength(3);
+
+            RuleFor(m => m.Clave)
+                .NotEmpty()
+                .MinimumLength(4);
         }
     }
 }

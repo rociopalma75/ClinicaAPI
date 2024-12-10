@@ -55,14 +55,11 @@ namespace Clinica_TFI.Application
         {
             Paciente? paciente = _clinicalRepository.GetPacienteByDni(dniPaciente) ?? throw new Exception($"El paciente con DNI {dniPaciente} no se encuentra");
 
-            //Para registrar pedido tiene que tener obra social?
             paciente.AddPedidoLaboratorio(diagnostico, idEvolucion, medico, pedidoRequest.Descripcion);
 
             _clinicalRepository.UpdatePaciente(paciente);
             return paciente;
         }
-
-
 
     }
 }

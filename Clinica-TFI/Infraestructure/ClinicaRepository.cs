@@ -11,7 +11,6 @@ namespace Clinica_TFI.Infraestructure
         {
             _contextoClinica = contextoClinica;
         }
-
         public bool ExistsMedico(string correo) => _contextoClinica.Medicos.Exists(m => m.Correo == correo);
 
         public bool ExistsPaciente(string dni) => _contextoClinica.Pacientes.Exists(p => p.Dni == dni);
@@ -34,6 +33,7 @@ namespace Clinica_TFI.Infraestructure
             medico.Id = idMedico;
             _contextoClinica.Medicos.Add(medico);
         }
+
 
     }
 }

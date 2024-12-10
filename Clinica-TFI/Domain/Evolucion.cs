@@ -25,6 +25,7 @@ namespace Clinica_TFI.Domain
             Id = id;
             Plantilla = plantilla;
             Medico = medico;
+            //FechaHora = new DateTime(2024, 10, 25, 10, 30, 00);
             FechaHora = DateTime.Now;
         }
         public bool ExistEvolucion(Medico medico, string informe)

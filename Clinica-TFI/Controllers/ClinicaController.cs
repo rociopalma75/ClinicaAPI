@@ -45,9 +45,14 @@ namespace Clinica_TFI.Controllers
         [HttpPost("Pacientes")]
         public async Task<ActionResult<Paciente?>> PostPaciente(PacienteRequestDTO pacienteRequest)
         {
-            Paciente pacienteCreado = _clinicaService.CreatePaciente(pacienteRequest);
+            try
+            {
+                Paciente pacienteCreado = _clinicaService.CreatePaciente(pacienteRequest);
 
-            return Ok(pacienteCreado);
+                return Ok(pacienteCreado);
+            }
+            catch (ArgumentException ex) { return BadRequest(ex.Message); }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
         [SwaggerOperation(Summary = "Agregar una evolución de texto libre a un paciente")]

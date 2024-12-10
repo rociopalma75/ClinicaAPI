@@ -43,7 +43,7 @@ namespace Clinica_TFI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                return Unauthorized(ex.Message);
             } 
 
         }

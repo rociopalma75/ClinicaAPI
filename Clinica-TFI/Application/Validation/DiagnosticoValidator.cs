@@ -1,4 +1,5 @@
 ﻿using Clinica_TFI.Application.DTO;
+using FluentValidation;
 
 namespace Clinica_TFI.Application.Validation
 {
@@ -6,7 +7,11 @@ namespace Clinica_TFI.Application.Validation
     {
         public DiagnosticoValidator()
         {
-            ValidateString(d => d.Descripcion, 5, 200);
+            RuleFor(d => d.Descripcion)
+                .NotEmpty()
+                .MinimumLength(4)
+                .MaximumLength(200)
+                .Must(diag => diag.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == ',' || c == '.'));
         }
     }
 }

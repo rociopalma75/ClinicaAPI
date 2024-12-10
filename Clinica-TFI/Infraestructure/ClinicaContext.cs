@@ -18,7 +18,10 @@ namespace Clinica_TFI.Infraestructure
                 new Paciente("42358796", "20-42358796-8", new DateOnly(1993, 10, 18), "lucia.fernandez@example.com", "+54 9 261 654-3210", "Lucía", "Fernández", "Boulevard Central 456, Mendoza")
             };
 
-            Medicos = new List<Medico>();
+            Medicos = new List<Medico>()
+            {
+                new Medico("Rocio", "Palma", "12345/Cl", "Clinico", "rociopalma@gmail.com", "admin")
+            };
             List<string> campos = new List<string>
             {
                 "Altura",
@@ -35,7 +38,7 @@ namespace Clinica_TFI.Infraestructure
             CatalogoPlantillas = new List<CatalogoPlantillas>() 
             { 
                 new CatalogoPlantillas(1,campos),
-                new CatalogoPlantillas(2, campos)
+                new CatalogoPlantillas(2, camposPlantilla2)
             } ;
         }
 

@@ -80,8 +80,6 @@ namespace Test.Aplication
             //Act & Assert
 
             Assert.Throws<ArgumentException>(() => _usuarioService.AutenticarMedico(credenciales));
-
-
         }
     }
 }
