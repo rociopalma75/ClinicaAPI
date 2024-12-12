@@ -46,7 +46,7 @@ namespace Clinica_TFI.Application.Connected_Services
             return resultsMedicamentos;
         }
 
-        public async Task<ObraSocial> GetObraSocial(int codigo)
+        public async Task<ObraSocial> GetObraSocial(string codigo)
         { 
             using (var httpClient = new HttpClient())
             {

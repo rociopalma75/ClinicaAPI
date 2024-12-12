@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Clinica_TFI.Application.Connected_Services;
 using Clinica_TFI.Application.DTO;
 using Clinica_TFI.Domain;
 using Clinica_TFI.Domain.Contracts;
@@ -8,11 +9,13 @@ namespace Clinica_TFI.Application
     public class ClinicaService
     {
         private readonly IClinicaRepository _clinicaRepository;
+        private readonly ExternalAPIService _externalAPIService;
         private readonly IMapper _mapper;
 
-        public ClinicaService(IClinicaRepository clinicaRepository, IMapper mapper)
+        public ClinicaService(IClinicaRepository clinicaRepository, ExternalAPIService externalAPIService, IMapper mapper)
         {
             _clinicaRepository = clinicaRepository;
+            _externalAPIService = externalAPIService;
             _mapper = mapper;
         }
 
@@ -30,6 +33,18 @@ namespace Clinica_TFI.Application
             _clinicaRepository.CreatePaciente(pacienteCreado);
             return pacienteCreado;
         }
+
+        public async Task<ObraSocial> ObtenerObraSocial(string codigoObraSocial)
+        {
+            ObraSocial obraSocial = new ObraSocial();
+            try
+            {
+                obraSocial = await _externalAPIService.GetObraSocial(codigoObraSocial);
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            return obraSocial;
+        }
+
         public Paciente AddEvolucionTextoLibre(string dniPaciente, string diagnostico, Medico medico, EvolucionRequestDTO evolRequest)
         {
             Paciente? paciente = _clinicaRepository.GetPacienteByDni(dniPaciente) ?? throw new ArgumentException($"El paciente con DNI {dniPaciente} no se encuentra");

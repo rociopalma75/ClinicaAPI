@@ -10,5 +10,6 @@
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string Domicilio { get; set; }
+        public string CodigoObraSocial { get; set; }
     }
 }
