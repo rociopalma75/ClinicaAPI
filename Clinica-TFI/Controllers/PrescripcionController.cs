@@ -12,7 +12,6 @@ namespace Clinica_TFI.Controllers
 {
     [Route("api/Clinica")]
     [ApiController]
-    [Authorize]
     public class PrescripcionController : ControllerBase
     {
         private readonly PrescripcionService _prescripcionService;

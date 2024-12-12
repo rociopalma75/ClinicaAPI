@@ -1,4 +1,6 @@
-﻿namespace Clinica_TFI.Domain
+﻿using System;
+
+namespace Clinica_TFI.Domain
 {
     public class Paciente
     {
@@ -10,7 +12,7 @@
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string Domicilio { get; set; }
-        public string? ObraSocial {  get; set; }
+        public ObraSocial? ObraSocialPaciente {  get; set; }
         public HistoriaClinica HistoriaClinica { get; set; }
 
         public Paciente(string dni, string cuil, DateOnly fechaNacimiento, string email, string telefono, string nombre, string apellido, string domicilio)
@@ -23,7 +25,12 @@
             Nombre = nombre;
             Apellido = apellido;
             Domicilio = domicilio;
-            ObraSocial = "SANCOR";
+            this.ObraSocialPaciente = new ObraSocial()
+            {
+                Codigo = "106005",
+                Denominacion = "OBRA SOCIAL DEL PERSONAL DE ENTIDADES DEPORTIVAS Y CIVILES",
+                Sigla = "OSPEDYC"
+            };
             HistoriaClinica = new HistoriaClinica();
         }
 

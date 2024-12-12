@@ -61,7 +61,7 @@ namespace Clinica_TFI.Application
 
             var token = new JwtSecurityToken(
                 claims: claims1,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddHours(5),
                 signingCredentials: creds
              );
 

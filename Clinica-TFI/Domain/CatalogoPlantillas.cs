@@ -5,6 +5,7 @@ namespace Clinica_TFI.Domain
     public class CatalogoPlantillas
     {
         public int Id { get; set; }
+        public string NombrePlantilla {  get; set; }
         public List<string> Campos { get; set; }
 
         public CatalogoPlantillas(int id)
@@ -13,9 +14,10 @@ namespace Clinica_TFI.Domain
             Id = id;
         }
 
-        public CatalogoPlantillas(int id, List<string> campos)
+        public CatalogoPlantillas(int id, string nombrePlantilla, List<string> campos)
         {
             Id = id;
+            NombrePlantilla = nombrePlantilla;
             Campos = campos;
         }
 

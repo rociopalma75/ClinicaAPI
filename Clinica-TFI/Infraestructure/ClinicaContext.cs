@@ -26,19 +26,24 @@ namespace Clinica_TFI.Infraestructure
             {
                 "Altura",
                 "Peso",
-                "Presion Arterial"
-            };
-
-            List<string> camposPlantilla2 = new List<string>
-            {
+                "Presion Arterial",
                 "Temperatura",
                 "Pulso"
             };
 
+            List<string> camposPlantilla2 = new List<string>
+            {
+                "Talla",
+                "Circunferencia Cefalica",
+                "Temperatura Corporal",
+                "Condicion de la piel",
+                "Frecuencia Respiratoria"
+            };
+
             CatalogoPlantillas = new List<CatalogoPlantillas>() 
             { 
-                new CatalogoPlantillas(1,campos),
-                new CatalogoPlantillas(2, camposPlantilla2)
+                new CatalogoPlantillas(1, "Enfermería",campos),
+                new CatalogoPlantillas(2, "Estado Físico",camposPlantilla2)
             } ;
         }
 
