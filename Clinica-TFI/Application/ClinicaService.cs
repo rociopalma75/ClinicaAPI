@@ -23,13 +23,16 @@ namespace Clinica_TFI.Application
         public Paciente? GetPacienteByDni(string dniPaciente) => _clinicaRepository.GetPacienteByDni(dniPaciente);
         public List<CatalogoPlantillas> GetCatalogoPlantillas() => _clinicaRepository.GetCatalogoPlantillas();
 
-        public Paciente CreatePaciente(PacienteRequestDTO pacienteRequestDTO)
+        public async Task<Paciente> CreatePaciente(PacienteRequestDTO pacienteRequestDTO)
         {
             bool pacienteExists = _clinicaRepository.ExistsPaciente(pacienteRequestDTO.Dni);
 
             if (pacienteExists) throw new ArgumentException($"El paciente con DNI {pacienteRequestDTO.Dni} ya está registrado");
 
+
             Paciente pacienteCreado = _mapper.Map<Paciente>(pacienteRequestDTO);
+            
+
             _clinicaRepository.CreatePaciente(pacienteCreado);
             return pacienteCreado;
         }

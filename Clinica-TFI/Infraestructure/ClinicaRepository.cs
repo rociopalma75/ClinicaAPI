@@ -33,7 +33,5 @@ namespace Clinica_TFI.Infraestructure
             medico.Id = idMedico;
             _contextoClinica.Medicos.Add(medico);
         }
-
-
     }
 }

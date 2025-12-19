@@ -46,7 +46,7 @@ namespace Clinica_TFI.Controllers
         {
             try
             {
-                Paciente pacienteCreado = _clinicaService.CreatePaciente(pacienteRequest);
+                Paciente pacienteCreado =await _clinicaService.CreatePaciente(pacienteRequest);
 
                 return Ok(pacienteCreado);
             }
