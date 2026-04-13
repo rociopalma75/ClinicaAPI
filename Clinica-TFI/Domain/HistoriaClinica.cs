@@ -1,4 +1,4 @@
-﻿namespace Clinica_TFI.Models
+﻿namespace Clinica_TFI.Domain
 {
     public class HistoriaClinica
     {
@@ -37,5 +37,31 @@
             return this.Diagnosticos.Any(d => d.ExistDiagnostico(nombreDiagnostico));
         }
 
+        public void AddEvolucionPlantilla(string diagnostico, Medico medico, CatalogoPlantillas plantilla, dynamic request)
+        {
+            Diagnostico? diagnosticoEncontrado = GetDiagnostico(diagnostico);
+
+            if (diagnosticoEncontrado == null) throw new ArgumentException($"El diagnóstico {diagnostico} no se encuentra");
+
+            diagnosticoEncontrado.AddEvolucionPlantilla(medico, plantilla, request);
+        }
+
+        public void AddRecetaDigital(string diagnostico, int idEvolucion, Medico medico, List<Medicamento> medicamentos, string observacionesMedicas)
+        {
+            Diagnostico? diagnosticoEncontrado = GetDiagnostico(diagnostico);
+
+            if (diagnosticoEncontrado == null) throw new ArgumentException($"El diagnóstico {diagnostico} no se encuentra");
+
+            diagnosticoEncontrado.AddRecetaDigital(idEvolucion, medico, medicamentos,observacionesMedicas);
+        }
+
+        public void AddPedidoLaboratorio(string diagnostico, int idEvolucion, Medico medico, string pedidoRequest)
+        {
+            Diagnostico? diagnosticoEncontrado = GetDiagnostico(diagnostico);
+
+            if (diagnosticoEncontrado == null) throw new ArgumentException($"El diagnóstico {diagnostico} no se encuentra");
+
+            diagnosticoEncontrado.AddPedidoLaboratorio(idEvolucion, medico, pedidoRequest);
+        }
     }
 }

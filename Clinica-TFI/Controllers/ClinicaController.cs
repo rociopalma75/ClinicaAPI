@@ -1,9 +1,10 @@
 ﻿using Clinica_TFI.Application;
 using Clinica_TFI.Application.DTO;
-using Clinica_TFI.Models;
+using Clinica_TFI.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Data.Common;
 using System.Text.Json;
 
@@ -11,7 +12,6 @@ namespace Clinica_TFI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ClinicaController : ControllerBase
     {
         private readonly ClinicaService _clinicaService;
@@ -19,14 +19,15 @@ namespace Clinica_TFI.Controllers
         {
             _clinicaService = clinicaService;
         }
-
+        [SwaggerOperation(Summary = "Listar las historias clínicas de todos los pacientes")]
         [HttpGet("Pacientes")]
         public async Task<ActionResult<List<Paciente>>> GetPacientes()
         {
-            List<Paciente?> pacientes = _clinicaService.GetPacientes();
+            List<Paciente> pacientes = _clinicaService.GetPacientes();
             return Ok(pacientes);
         }
 
+        [SwaggerOperation(Summary = "Listar la historia clínica de un paciente")]
         [HttpGet("Pacientes/{dniPaciente}")] 
         public async Task<ActionResult<Paciente?>> GetPacienteByDni(string dniPaciente)
         {
@@ -39,14 +40,21 @@ namespace Clinica_TFI.Controllers
             return Ok(paciente);
         }
 
+        [SwaggerOperation(Summary = "Registrar paciente")]
         [HttpPost("Pacientes")]
         public async Task<ActionResult<Paciente?>> PostPaciente(PacienteRequestDTO pacienteRequest)
         {
-            Paciente pacienteCreado = _clinicaService.CreatePaciente(pacienteRequest);
+            try
+            {
+                Paciente pacienteCreado =await _clinicaService.CreatePaciente(pacienteRequest);
 
-            return Ok(pacienteCreado);
+                return Ok(pacienteCreado);
+            }
+            catch (ArgumentException ex) { return BadRequest(ex.Message); }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
+        [SwaggerOperation(Summary = "Agregar una evolución de texto libre a un paciente")]
         [HttpPost("Pacientes/{dniPaciente}/Diagnosticos/{diagnostico}")]
         public async Task<ActionResult<Paciente?>> AddEvolucion(string dniPaciente, string diagnostico, [FromBody] EvolucionRequestDTO evolRequest)
         {
@@ -60,19 +68,14 @@ namespace Clinica_TFI.Controllers
 
             try
             {
-                Paciente paciente = _clinicaService.AddEvolucion(dniPaciente, diagnostico, medico, evolRequest);
+                Paciente paciente = _clinicaService.AddEvolucionTextoLibre(dniPaciente, diagnostico, medico, evolRequest);
                 return Ok(paciente);
             }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.ToString());
-            } 
+            catch (ArgumentException ex) { return BadRequest(ex.Message); }
+            catch (Exception ex){ return BadRequest(ex.ToString()); }              
         }
 
+        [SwaggerOperation(Summary = "Agregar un nuevo diagnóstico a un paciente")]
         [HttpPost("Pacientes/{dniPaciente}/Diagnosticos")]
         public async Task<ActionResult<Paciente>> AddDiagnostico(string dniPaciente, [FromBody] DiagnosticoRequestDTO diagnosticoRequest)
         {
@@ -90,6 +93,41 @@ namespace Clinica_TFI.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.ToString());
+            }
+        }
+
+        [SwaggerOperation(Summary = "Listar las plantillas de evolución")]
+        [HttpGet("CatalogoPlantillas")]
+        public async Task<ActionResult<List<CatalogoPlantillas>>> GetPlantillas()
+        {
+            List<CatalogoPlantillas> catalogoPlantillas = _clinicaService.GetCatalogoPlantillas();
+            return Ok(catalogoPlantillas);
+        }
+
+
+        [SwaggerOperation(Summary = "Agregar una evolución con una plantilla en lugar de texto libre")]
+        [HttpPost("Pacientes/{dniPaciente}/Diagnosticos/{diagnostico}/Plantilla/{idPlantilla}")]
+        public async Task<ActionResult<Paciente>> AddEvolucionPlantilla(string dniPaciente, string diagnostico, int idPlantilla, [FromBody] dynamic request)
+        {
+            if (!dniPaciente.All(c => char.IsDigit(c))) throw new ArgumentException("Ingreso un DNI con formato invalido");
+
+            var medicoJson = User.FindFirst("Sesion").Value;
+            if (string.IsNullOrEmpty(medicoJson)) return Unauthorized("No se pudo identificar el medico");
+            Medico medico = JsonSerializer.Deserialize<Medico>(medicoJson);
+
+            try
+            {
+                Paciente paciente = _clinicaService.AddEvolucionPlantilla(dniPaciente, diagnostico, medico, idPlantilla, request);
+
+                return Ok(paciente);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

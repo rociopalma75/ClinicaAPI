@@ -4,7 +4,7 @@ using TechTalk.SpecFlow;
 using NSubstitute;
 using AutoMapper;
 using Clinica_TFI.Application;
-using Clinica_TFI.Models;
+using Clinica_TFI.Domain;
 using TechTalk.SpecFlow.Assist;
 using Clinica_TFI.Application.DTO;
 

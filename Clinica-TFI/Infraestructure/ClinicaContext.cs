@@ -1,4 +1,4 @@
-﻿using Clinica_TFI.Models;
+﻿using Clinica_TFI.Domain;
 
 namespace Clinica_TFI.Infraestructure
 {
@@ -6,6 +6,7 @@ namespace Clinica_TFI.Infraestructure
     {
         public List<Paciente> Pacientes { get; set; }
         public List<Medico> Medicos { get; set; }
+        public List<CatalogoPlantillas> CatalogoPlantillas {  get; set; }
         public ClinicaContext()
         {
             Pacientes = new List<Paciente>
@@ -17,7 +18,33 @@ namespace Clinica_TFI.Infraestructure
                 new Paciente("42358796", "20-42358796-8", new DateOnly(1993, 10, 18), "lucia.fernandez@example.com", "+54 9 261 654-3210", "Lucía", "Fernández", "Boulevard Central 456, Mendoza")
             };
 
-            Medicos = new List<Medico>();
+            Medicos = new List<Medico>()
+            {
+                new Medico("Rocio", "Palma", "12345/Cl", "Clinico", "rociopalma@gmail.com", "admin")
+            };
+            List<string> campos = new List<string>
+            {
+                "Altura",
+                "Peso",
+                "Presion Arterial",
+                "Temperatura",
+                "Pulso"
+            };
+
+            List<string> camposPlantilla2 = new List<string>
+            {
+                "Talla",
+                "Circunferencia Cefalica",
+                "Temperatura Corporal",
+                "Condicion de la piel",
+                "Frecuencia Respiratoria"
+            };
+
+            CatalogoPlantillas = new List<CatalogoPlantillas>() 
+            { 
+                new CatalogoPlantillas(1, "Enfermería",campos),
+                new CatalogoPlantillas(2, "Estado Físico",camposPlantilla2)
+            } ;
         }
 
     }

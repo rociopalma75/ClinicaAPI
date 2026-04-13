@@ -2,7 +2,7 @@ using AutoMapper;
 using Clinica_TFI.Application;
 using Clinica_TFI.Application.DTO;
 using Clinica_TFI.Domain.Contracts;
-using Clinica_TFI.Models;
+using Clinica_TFI.Domain;
 using NSubstitute;
 using System;
 using TechTalk.SpecFlow;
@@ -36,7 +36,7 @@ namespace Test.StepDefinitions
         [Given("el medico {string} ha iniciado sesion.")]
         public void GivenElMedicoHaIniciadoSesion_(string nombreMedico)
         {
-            _medico = new Medico(nombreMedico, "Torres", "Clinico", "rocio@gmail.com", "1234");
+            _medico = new Medico(nombreMedico, "Torres","12345/cl", "clinico" , "rocio@gmail.com", "1234");
         }
 
         [Given("ha buscado la historia clinica del paciente {string} que posee los siguientes diagnosticos")]
@@ -58,7 +58,7 @@ namespace Test.StepDefinitions
         [When("el medico guarda la evolucion")]
         public void WhenElMedicoGuardaLaEvolucion()
         {
-            this._pacienteResultado = _clinicaService.AddEvolucion(_dniPaciente, _diagnosticoElegido, _medico, _evolucionIngresada);
+            this._pacienteResultado = _clinicaService.AddEvolucionTextoLibre(_dniPaciente, _diagnosticoElegido, _medico, _evolucionIngresada);
         }
 
         [Then("se registra la evolucion en la historia clinica del paciente con el diagnostico, la descripcion y el medico.")]

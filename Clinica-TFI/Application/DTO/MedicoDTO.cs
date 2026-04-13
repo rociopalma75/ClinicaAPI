@@ -3,27 +3,26 @@
     public record MedicoResponseDTO
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
-        public string MatriculaMedica { get; set; }
-        public string Especialidad { get; set; }
-        public string Correo { get; set; }
+        public string Nombre { get; set; } = null!;
+        public string Apellido { get; set; } = null!;
+        public string MatriculaMedica { get; set; } =null!;
+        public string Especialidad { get; set; } = null!;
+        public string Correo { get; set; } = null!;
     }
 
     public record MedicoRequestDTO
     {
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
-        public string MatriculaMedica {  get; set; }
-        public string Especialidad { get; set; }
-        public string Correo { get; set; }
-
-        public string Clave {  get; set; }
+        public string Nombre { get; set; } = null!;
+        public string Apellido { get; set; } = null!;
+        public string MatriculaMedica { get; set; } = null!;
+        public string Especialidad { get; set; } = null!;
+        public string Correo { get; set; } = null!;
+        public string Clave {  get; set; } = null!;
     }
 
     public record MedicoLogInDTO
     {
-        public string Correo { get; set; }
-        public string Clave { get; set; }
+        public string Correo { get; set; } = null!;
+        public string Clave { get; set; } = null!;
     }
 }

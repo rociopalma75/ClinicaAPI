@@ -1,36 +1,54 @@
 ﻿using AutoMapper;
+using Clinica_TFI.Application.Connected_Services;
 using Clinica_TFI.Application.DTO;
+using Clinica_TFI.Domain;
 using Clinica_TFI.Domain.Contracts;
-using Clinica_TFI.Models;
 
 namespace Clinica_TFI.Application
 {
     public class ClinicaService
     {
         private readonly IClinicaRepository _clinicaRepository;
+        private readonly ExternalAPIService _externalAPIService;
         private readonly IMapper _mapper;
 
-        public ClinicaService(IClinicaRepository clinicaRepository, IMapper mapper)
+        public ClinicaService(IClinicaRepository clinicaRepository, ExternalAPIService externalAPIService, IMapper mapper)
         {
             _clinicaRepository = clinicaRepository;
+            _externalAPIService = externalAPIService;
             _mapper = mapper;
         }
 
         public List<Paciente> GetPacientes() => _clinicaRepository.GetPacientes();
         public Paciente? GetPacienteByDni(string dniPaciente) => _clinicaRepository.GetPacienteByDni(dniPaciente);
+        public List<CatalogoPlantillas> GetCatalogoPlantillas() => _clinicaRepository.GetCatalogoPlantillas();
 
-
-        public Paciente CreatePaciente(PacienteRequestDTO pacienteRequestDTO)
+        public async Task<Paciente> CreatePaciente(PacienteRequestDTO pacienteRequestDTO)
         {
             bool pacienteExists = _clinicaRepository.ExistsPaciente(pacienteRequestDTO.Dni);
 
             if (pacienteExists) throw new ArgumentException($"El paciente con DNI {pacienteRequestDTO.Dni} ya está registrado");
 
+
             Paciente pacienteCreado = _mapper.Map<Paciente>(pacienteRequestDTO);
+            
+
             _clinicaRepository.CreatePaciente(pacienteCreado);
             return pacienteCreado;
         }
-        public Paciente AddEvolucion(string dniPaciente, string diagnostico, Medico medico, EvolucionRequestDTO evolRequest)
+
+        public async Task<ObraSocial> ObtenerObraSocial(string codigoObraSocial)
+        {
+            ObraSocial obraSocial = new ObraSocial();
+            try
+            {
+                obraSocial = await _externalAPIService.GetObraSocial(codigoObraSocial);
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            return obraSocial;
+        }
+
+        public Paciente AddEvolucionTextoLibre(string dniPaciente, string diagnostico, Medico medico, EvolucionRequestDTO evolRequest)
         {
             Paciente? paciente = _clinicaRepository.GetPacienteByDni(dniPaciente) ?? throw new ArgumentException($"El paciente con DNI {dniPaciente} no se encuentra");
 
@@ -54,9 +72,15 @@ namespace Clinica_TFI.Application
             return paciente;
         }
 
-        public Paciente AddRecetaDigital(string dniPaciente, string diagnostico, string )
+        public Paciente AddEvolucionPlantilla(string dniPaciente, string diagnostico, Medico medico, int idPlantilla, dynamic request)
         {
+            Paciente? paciente = _clinicaRepository.GetPacienteByDni(dniPaciente) ?? throw new ArgumentException($"El paciente con DNI {dniPaciente} no se encuentra");
 
+            CatalogoPlantillas? catalogoPlantilla = _clinicaRepository.GetCatalogoPlantillaById(idPlantilla) ?? throw new ArgumentException($"La plantilla con ID {idPlantilla} no se encuentra registrada");
+
+            paciente.AddEvolucionPlantilla(diagnostico, medico, catalogoPlantilla, request);
+            _clinicaRepository.UpdatePaciente(paciente);
+            return paciente;
         }
     }
 }

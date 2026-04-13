@@ -1,6 +1,6 @@
 ﻿using Clinica_TFI.Application;
 using Clinica_TFI.Application.DTO;
-using Clinica_TFI.Models;
+using Clinica_TFI.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -43,7 +43,7 @@ namespace Clinica_TFI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                return Unauthorized(ex.Message);
             } 
 
         }
