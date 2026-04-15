@@ -19,6 +19,11 @@ namespace Clinica_TFI.Application
             _mapper = mapper;
         }
 
+        public ClinicaService(IClinicaRepository clinicalRepository, IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         public List<Paciente> GetPacientes() => _clinicaRepository.GetPacientes();
         public Paciente? GetPacienteByDni(string dniPaciente) => _clinicaRepository.GetPacienteByDni(dniPaciente);
         public List<CatalogoPlantillas> GetCatalogoPlantillas() => _clinicaRepository.GetCatalogoPlantillas();

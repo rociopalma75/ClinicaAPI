@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Moq;
-using Xunit;
+﻿using Moq;
 using Clinica_TFI.Application;
 using Clinica_TFI.Domain;
 using Clinica_TFI.Application.DTO;
-using System;
 using Clinica_TFI.Domain.Contracts;
 
 
@@ -27,16 +19,17 @@ namespace Test.Aplication
         }
 
         [Fact]
-        public void AutenticarUsuario_ValidarCredenciales_ReturnToken()
+        public void AutenticarMedico_CredencialesValidas_RetornaToken()
         {
 
             // Arrange
-            var medico = new Medico("John", "Doe", "12315", "Cardiologo", "johndoe@gmail.com", "pass1234");
-            _mockRepo.Setup(repo => repo.GetMedicoByCorreo("johndoe@gmail.com")).Returns(medico);
+            string correo = "usuario@gmail.com";
+            var medico = new Medico("John", "Doe", "12315", "Cardiologo", correo, "pass1234");
+            _mockRepo.Setup(repo => repo.GetMedicoByCorreo(correo)).Returns(medico);
 
             var credenciales = new MedicoLogInDTO
             {
-                Correo = "johndoe@gmail.com",
+                Correo = correo,
                 Clave = "pass1234"
             };
 
@@ -49,15 +42,16 @@ namespace Test.Aplication
 
         [Fact]
 
-        public void AutenticarMedicoConContraseniaInvalida()
+        public void AutenticarMedico_CredencialesInvalidas_RetornaExcepcion()
         {
             //Arrange
-            var medico = new Medico("John", "Doe", "12315", "Cardiologo", "Johndoe@gmail.com", "pass1234");
-            _mockRepo.Setup(repo => repo.GetMedicoByCorreo("johndoe@gmail.com")).Returns(medico);
+            string correo = "johndoe@gmail.com";
+            var medico = new Medico("John", "Doe", "12315", "Cardiologo", correo, "pass1234");
+            _mockRepo.Setup(repo => repo.GetMedicoByCorreo(correo)).Returns(medico);
 
             var credenciales = new MedicoLogInDTO
             {
-                Correo = "johndoe@gmail.com",
+                Correo = correo,
                 Clave = "malpass12345"
             };
 
@@ -67,13 +61,14 @@ namespace Test.Aplication
 
         [Fact]
 
-        public void AutenticarMedicoMedicoNoEncontrado()
+        public void AutenticarMedico_MedicoNoEncontrado_RetornaExcepcion()
         {
-            _mockRepo.Setup(repo => repo.GetMedicoByCorreo("noexist@gmail.com")).Returns((Medico)null);
+            string correoInexistente = "usuarioInexistente@gmail.com";
+            _mockRepo.Setup(repo => repo.GetMedicoByCorreo(correoInexistente)).Returns((Medico)null);
 
             var credenciales = new MedicoLogInDTO
             {
-                Correo = "noexist@gmail.com",
+                Correo = correoInexistente,
                 Clave = "pass1234"
             };
 

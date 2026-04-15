@@ -15,6 +15,7 @@ namespace Clinica_TFI.Domain
         public ObraSocial? ObraSocialPaciente {  get; set; }
         public HistoriaClinica HistoriaClinica { get; set; }
 
+        public Paciente() { }
         public Paciente(string dni, string cuil, DateOnly fechaNacimiento, string email, string telefono, string nombre, string apellido, string domicilio)
         {
             Dni = dni;
